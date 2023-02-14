@@ -1,3 +1,7 @@
+/src/bin
+/src/obj
+/Roms
+
 # Compiled Lua sources
 luac.out
 
