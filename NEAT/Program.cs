@@ -6,7 +6,9 @@ namespace NEAT
     {
         static void Main(string[] args)
         {
-            Genome g = new Genome(1, 4, 4);
+            Genome g = new Genome(1, 2, 1);
+            Console.WriteLine(g);
+            Mutate.AddConnection(g);
             Console.WriteLine(g);
         }
     }

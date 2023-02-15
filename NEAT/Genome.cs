@@ -2,17 +2,8 @@ using System;
 
 namespace NEAT
 {
-    class Genome
+    class Genome : IEquatable<Genome>
     {
-        // Mutation probabilites
-        private static double ConnectionMutationProb = 0.25;
-        private static double LinkMutationProb = 2.0;
-        private static double BiasMutationProb = 0.4;
-        private static double NodeMutationProb = 0.5;
-        private static double EnableGeneProb = 0.2;
-        private static double DisableGeneProb = 0.4;
-        private static double StepSize = 0.1;
-
         // enumerated values
         public enum NodeType {Sensor, Hidden, Output}
 
@@ -54,6 +45,11 @@ namespace NEAT
             set {this.adjustedFitness = value;}
         }
 
+        public Random Rand
+        {
+            get {return this.rand;}
+        }
+
         public Genome(int id, int inputs, int outputs)
         {
             this.nodes = new List<Node>();
@@ -66,13 +62,13 @@ namespace NEAT
             // create nodes for the input
             for (int i = 0; i < inputs; i++)
             {
-                nodes.Add(new Node(NewNode(), NodeType.Sensor, this));
+                nodes.Add(new Node(NextNode(), NodeType.Sensor, this));
             }
 
             // create nodes for the output
             for (int i = 0; i < outputs; i++)
             {
-                nodes.Add(new Node(NewNode(), NodeType.Output, this));
+                nodes.Add(new Node(NextNode(), NodeType.Output, this));
             }
 
             // create connections between the inputs and outputs
@@ -88,24 +84,52 @@ namespace NEAT
             }
         }
 
-        private void NewConnection(Node i, Node o)
+        public void NewConnection(Node i, Node o, Nullable<double> weight = null)
         {
-            connections.Add(new Connection(i, o, (rand.NextDouble()*6) - 3, NewInnovation(), true));
+            if (weight == null) // if not give a weight, select a random one between -3 and 3
+            {
+                connections.Add(new Connection(i, o, (rand.NextDouble()*6) - 3, NextInnovation(), true));
+            }
+            else // otherwise, use the given value
+            {
+                connections.Add(new Connection(i, o, weight.Value, NextInnovation(), true));
+            }
             o.Inputs.Add(i);
         }
 
-        private int NewInnovation()
+        public int NextNode()
+        {
+            int temp = nextNode;
+            nextNode++;
+            return temp;
+        }
+
+        private int NextInnovation()
         {
             int temp = nextInnovation;
             nextInnovation++;
             return temp;
         }
 
-        private int NewNode()
+        // IEquatable override
+        public bool Equals(Genome? other)
         {
-            int temp = nextNode;
-            nextNode++;
-            return temp;
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (this.id == other.ID)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return id.GetHashCode();
         }
 
         private String ListNodes(NodeType t)
@@ -121,10 +145,21 @@ namespace NEAT
             return temp;
         }
 
-        public override String ToString()
+        private String ListConnections()
         {
-            return $"Genome: {id}\nInputs:\n{ListNodes(NodeType.Sensor)}\nHidden Nodes:\n{ListNodes(NodeType.Hidden)}\nOutput:\n{ListNodes(NodeType.Output)}";
+            String temp = "";
+            foreach(Connection c in connections)
+            {
+                temp += $"\tInnovation: {c.Innovation}\n\tExpressed: {c.IsExpressed} | Weight: {c.Weight}\n\tInput:\n\t\t{c.Input}\n\tOutput:\n\t\t{c.Output}\n\n";
+            }
+            return temp;
         }
 
+        public override String ToString()
+        {
+            return $"Genome: {id}\nInputs:\n{ListNodes(NodeType.Sensor)}\nHidden Nodes:\n{ListNodes(NodeType.Hidden)}\nOutput:\n{ListNodes(NodeType.Output)}\nConnections:\n{ListConnections()}";
+        }
+
+        
     }
 }

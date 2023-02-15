@@ -2,7 +2,7 @@ using System;
 
 namespace NEAT
 {
-    class Node
+    class Node : IEquatable<Node>
     {
 
         // fields
@@ -64,14 +64,24 @@ namespace NEAT
             return Math.Max(value, 0.0);
         }
 
-        public bool Equals(Node other)
+        public bool Equals(Node? other)
         {
+            if (other is null)
+            {
+                return false;
+            } 
+
             if(this.number == other.Number)
             {
                 return true;
             }
 
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return number.GetHashCode();
         }
 
         public override string ToString()
