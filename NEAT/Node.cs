@@ -9,6 +9,7 @@ namespace NEAT
         private Genome.NodeType type;
         private List<Node> inputs;
         private double potential;
+        private double activation;
         private Genome genome;
         private int number;
 
@@ -56,12 +57,18 @@ namespace NEAT
             }
 
             // pass the resulting sum into the activation function
-            this.potential = Activation(potential);
+            this.activation = ReLU(potential);
         }
 
-        public double Activation(double value) // Uses rectified Linear Unit as the activation function
+        public double ReLU(double value) // Uses rectified Linear Unit as the activation function
         {
             return Math.Max(value, 0.0);
+        }
+
+        public double Sigmoid(double value)
+        {
+            double slope = 4.924273;
+            return (1 / (1 + (Math.Exp(-(slope * value)))));
         }
 
         public bool Equals(Node? other)

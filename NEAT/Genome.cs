@@ -50,14 +50,14 @@ namespace NEAT
             get {return this.rand;}
         }
 
-        public Genome(int id, int inputs, int outputs)
+        public Genome(int id, int inputs, int outputs, Random r)
         {
             this.nodes = new List<Node>();
             this.connections = new List<Connection>();
             this.id = id;
             this.nextInnovation = 1;
             this.nextNode = 1;
-            this.rand = new Random();
+            this.rand = r;
 
             // create nodes for the input
             for (int i = 0; i < inputs; i++)

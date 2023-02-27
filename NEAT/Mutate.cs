@@ -46,7 +46,10 @@ namespace NEAT
 
         public static void MutateWeights(Genome g)
         {
-
+            foreach(Connection c in g.Connections)
+            {
+                
+            }
         }
     }
 }
