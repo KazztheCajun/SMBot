@@ -44,12 +44,59 @@ namespace NEAT
             g.NewConnection(n, c.Output, weight: c.Weight); // create a new connection between the new node and the old output
         }
 
-        public static void MutateWeights(Genome g)
+        public static void DisableGene(Genome g)
         {
-            foreach(Connection c in g.Connections)
+            // get a list of active genes
+            List<Connection> active = g.Connections.FindAll(c => c.IsExpressed);
+            // select a gene randomly
+            Connection connection = active[g.Rand.Next(active.Count-1)];
+            // check that this gene can be disabled without isolating it's subnetwork
+            // to do this, a connection must have the following properties:
+            // -- The input node of the connection has at least one other connection for which it is also an input node
+            // -- At least on of the other connections is not currently disabled
+            // -- The innovation number of the other connections are not the same as this connection
+            List<Connection> hasOther = g.Connections.FindAll(c => c.Input.Equals(connection.Input) || c.IsExpressed || c.Innovation != connection.Innovation);
+            if(hasOther.Count > 0) // if there is at least one other connection
             {
-                
+                connection.IsExpressed = false; // the connection can be safely disabled
             }
         }
+
+        public static void EnableGene(Genome g)
+        {
+            // select a random disabled gene
+            List<Connection> disabled = g.Connections.FindAll(c => !c.IsExpressed);
+
+            if(disabled.Count > 0)
+            {
+                disabled[g.Rand.Next(disabled.Count - 1)].IsExpressed = true;
+            }
+
+        }
+
+        public static void MutateWeights(Genome g, String t = "noise")
+        {
+            // mutate each weight in a genome
+            foreach(Connection c in g.Connections)
+            {
+                if(t == "noise")
+                {
+                    GaussianNoise(c);
+                }
+            }
+        }
+
+        private static void GaussianNoise(Connection c)
+        {
+            // adds gaussian noise to the weight of a Connection
+            c.Weight += Helper.NextGaussian();
+        }
+
+        private static void ColdGaussian(Connection c)
+        {
+            // sets the weight of a connection to a normal random number
+            c.Weight = Helper.NextGaussian();
+        }
+ 
     }
 }

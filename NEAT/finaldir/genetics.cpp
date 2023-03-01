@@ -721,12 +721,12 @@ void Genome::mutate_link_weights(double power,double rate,mutator mut_type) {
     else {
       //Half the time don't do any cold mutations
       if (randfloat()>0.5) {
-	gausspoint=1.0-rate;
-	coldgausspoint=1.0-rate-0.1;
+        gausspoint=1.0-rate;
+        coldgausspoint=1.0-rate-0.1;
       }
       else {
-	gausspoint=1.0-rate;
-	coldgausspoint=1.0-rate;
+        gausspoint=1.0-rate;
+        coldgausspoint=1.0-rate;
      }
   }
 
@@ -738,9 +738,9 @@ void Genome::mutate_link_weights(double power,double rate,mutator mut_type) {
     if (mut_type==GAUSSIAN) {
       randchoice=randfloat();
       if (randchoice>gausspoint)
-	((*curgene)->lnk)->weight+=randnum;
+	      ((*curgene)->lnk)->weight+=randnum;
       else if (randchoice>coldgausspoint)
-	((*curgene)->lnk)->weight=randnum;
+	      ((*curgene)->lnk)->weight=randnum;
     }
     else if (mut_type==COLDGAUSSIAN)
       ((*curgene)->lnk)->weight=randnum;
@@ -776,18 +776,16 @@ void Genome::mutate_toggle_enable(int times) {
       
       //Toggle the enable on this gene
       if (((*thegene)->enable)==true) {
-	//We need to make sure that another gene connects out of the in-node
-	//Because if not a section of network will break off and become isolated
-	checkgene=genes.begin();
-	while((checkgene!=genes.end())&&
-	      (((((*checkgene)->lnk)->in_node)!=(((*thegene)->lnk)->in_node))||
-	       (((*checkgene)->enable)==false)||
-	       ((*checkgene)->innovation_num==(*thegene)->innovation_num)))
-	  ++checkgene;
-	
-	//Disable the gene if it's safe to do so
-	if (checkgene!=genes.end())
-	  (*thegene)->enable=false;
+        //We need to make sure that another gene connects out of the in-node
+        //Because if not a section of network will break off and become isolated
+        checkgene=genes.begin();
+        while((checkgene!=genes.end()) &&
+              (((((*checkgene)->lnk)->in_node)!=(((*thegene)->lnk)->in_node))|| (((*checkgene)->enable)==false)|| ((*checkgene)->innovation_num==(*thegene)->innovation_num)))
+          ++checkgene;
+        
+        //Disable the gene if it's safe to do so
+        if (checkgene!=genes.end())
+          (*thegene)->enable=false;
       }
       else (*thegene)->enable=true;
     }
@@ -930,32 +928,32 @@ bool Genome::mutate_add_node(list<Innovation*> &innovs,int &curnode_id,double &c
 
     if (theinnov==innovs.end()) {
 
-      //The innovation is totally novel
+        //The innovation is totally novel
 
-      //Get the old link's trait
-      traitptr=thelink->linktrait;
+        //Get the old link's trait
+        traitptr=thelink->linktrait;
 
-      //Create the new NNode
-      //By convention, it will point to the first trait
-      newnode=new NNode(NEURON,curnode_id++,HIDDEN);
-      newnode->nodetrait=(*(traits.begin()));
-      
-      //Create the new Genes
-      if (thelink->is_recurrent) {
-	newgene1=new Gene(traitptr,1.0,in_node,newnode,TRUE,curinnov,0);
-	newgene2=new Gene(traitptr,oldweight,newnode,out_node,FALSE,curinnov+1,0);
-	curinnov+=2.0;
-      }
-      else {
-	newgene1=new Gene(traitptr,1.0,in_node,newnode,FALSE,curinnov,0);
-	newgene2=new Gene(traitptr,oldweight,newnode,out_node,FALSE,curinnov+1,0);
-	curinnov+=2.0;
-      }
+        //Create the new NNode
+        //By convention, it will point to the first trait
+        newnode=new NNode(NEURON,curnode_id++,HIDDEN);
+        newnode->nodetrait=(*(traits.begin()));
+        
+        //Create the new Genes
+        if (thelink->is_recurrent) {
+          newgene1=new Gene(traitptr,1.0,in_node,newnode,TRUE,curinnov,0);
+          newgene2=new Gene(traitptr,oldweight,newnode,out_node,FALSE,curinnov+1,0);
+          curinnov+=2.0;
+        }
+        else {
+          newgene1=new Gene(traitptr,1.0,in_node,newnode,FALSE,curinnov,0);
+          newgene2=new Gene(traitptr,oldweight,newnode,out_node,FALSE,curinnov+1,0);
+          curinnov+=2.0;
+        }
 
-      //Add the innovations (remember what was done)
-      innovs.push_back(new Innovation(in_node->node_id,out_node->node_id,curinnov-2.0,curinnov-1.0,newnode->node_id,(*thegene)->innovation_num));      
+        //Add the innovations (remember what was done)
+        innovs.push_back(new Innovation(in_node->node_id,out_node->node_id,curinnov-2.0,curinnov-1.0,newnode->node_id,(*thegene)->innovation_num));      
 
-      done=true;
+        done=true;
     }
 
     /* We check to see if an innovation already occured that was:
@@ -972,28 +970,28 @@ bool Genome::mutate_add_node(list<Innovation*> &innovs,int &curnode_id,double &c
 	     ((*theinnov)->old_innov_num==(*thegene)->innovation_num)) 
       {
       
-	//Here, the innovation has been done before
-	
-	//Get the old link's trait
-	traitptr=thelink->linktrait;
+        //Here, the innovation has been done before
+        
+        //Get the old link's trait
+        traitptr=thelink->linktrait;
 
-	//Create the new NNode
-	newnode=new NNode(NEURON,(*theinnov)->newnode_id,HIDDEN);      
-	//By convention, it will point to the first trait
-	//Note: In future may want to change this
-	newnode->nodetrait=(*(traits.begin()));
+        //Create the new NNode
+        newnode=new NNode(NEURON,(*theinnov)->newnode_id,HIDDEN);      
+        //By convention, it will point to the first trait
+        //Note: In future may want to change this
+        newnode->nodetrait=(*(traits.begin()));
 
-	//Create the new Genes
-	if (thelink->is_recurrent) {
-	  newgene1=new Gene(traitptr,1.0,in_node,newnode,TRUE,(*theinnov)->innovation_num1,0);
-	  newgene2=new Gene(traitptr,oldweight,newnode,out_node,FALSE,(*theinnov)->innovation_num2,0);
-	}
-	else {
-	  newgene1=new Gene(traitptr,1.0,in_node,newnode,FALSE,(*theinnov)->innovation_num1,0);
-	  newgene2=new Gene(traitptr,oldweight,newnode,out_node,FALSE,(*theinnov)->innovation_num2,0);
-	}
+        //Create the new Genes
+        if (thelink->is_recurrent) {
+          newgene1=new Gene(traitptr,1.0,in_node,newnode,TRUE,(*theinnov)->innovation_num1,0);
+          newgene2=new Gene(traitptr,oldweight,newnode,out_node,FALSE,(*theinnov)->innovation_num2,0);
+        }
+        else {
+          newgene1=new Gene(traitptr,1.0,in_node,newnode,FALSE,(*theinnov)->innovation_num1,0);
+          newgene2=new Gene(traitptr,oldweight,newnode,out_node,FALSE,(*theinnov)->innovation_num2,0);
+        }
 
-	done=true;
+        done=true;
       }
     else ++theinnov;
   }
