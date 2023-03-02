@@ -115,14 +115,33 @@ namespace NEAT
             String temp = "";
             foreach(Connection c in connections)
             {
-                temp += $"\tInnovation: {c.Innovation}\n\tExpressed: {c.IsExpressed} | Weight: {c.Weight}\n\tInput:\n\t\t{c.Input}\n\tOutput:\n\t\t{c.Output}\n\n";
+                temp += $"    Innovation: {c.Innovation}\n    Expressed: {c.IsExpressed} | Weight: {c.Weight}\n    Input:\n\t{c.Input}\n    Output:\n\t{c.Output}\n    --------\n";
             }
             return temp;
         }
 
         public override String ToString()
         {
-            return $"Genome: {id}\nInputs:\n{ListNodes(NodeType.Sensor)}\nHidden Nodes:\n{ListNodes(NodeType.Hidden)}\nOutput:\n{ListNodes(NodeType.Output)}\nConnections:\n{ListConnections()}";
+            //Genome: ####
+            //    Inputs:
+            //        {List of input nodes}
+            //    Hidden:
+            //        {List of hidden nodes}
+            //    Outouts:
+            //        {List of output nodes}
+            return $"Genome: {this.id}\nInputs:\n{ListNodes(NodeType.Sensor)}\nHidden Nodes:\n{ListNodes(NodeType.Hidden)}\nOutput:\n{ListNodes(NodeType.Output)}\nConnections:\n{ListConnections()}";
+        }
+
+        public String Summery()
+        {
+            //Summery:
+            //    Inputs:
+            //        {List of input nodes}
+            //    Hidden:
+            //        {List of hidden nodes}
+            //    Outouts:
+            //        {List of output nodes}
+            return $"Summery:\n  Inputs:\n{ListNodes(NodeType.Sensor)}\n  Hidden Nodes:\n{ListNodes(NodeType.Hidden)}\n  Output:\n{ListNodes(NodeType.Output)}\n  Connections:\n{ListConnections()}";
         }
 
         // Properties
@@ -136,7 +155,7 @@ namespace NEAT
         }
         public int ID
         {
-            get {return ID;}
+            get {return this.id;}
         }
         public double Fitness
         {

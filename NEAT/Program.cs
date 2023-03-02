@@ -7,10 +7,10 @@ namespace NEAT
         static void Main(string[] args)
         {
             Random rand = new Random();
-            Genome g = new Genome(1, 2, 1, rand);
-            Console.WriteLine(g);
-            Mutate.AddConnection(g);
-            Console.WriteLine(g);
+            Population p = new Population(4, 2, 2);
+            //Console.WriteLine(p.Genomes[0]);
+            Console.WriteLine(p);
+            Console.WriteLine(p.ToString(verbosity: true));
         }
     }
 
