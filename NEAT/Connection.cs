@@ -2,16 +2,42 @@ using System;
 
 namespace NEAT
 {
-    class Connection
+    class Connection : IEquatable<Connection>
     {
-        // Fields
+        // fields
         Node input;
         Node output;
         double weight;
         bool isExpressed;
         int innovation;
 
-        // Properties
+        // constructors
+        public Connection(Node i, Node o, double w, int inum, bool e)
+        {
+            this.input = i;
+            this.output = o;
+            this.weight = w;
+            this.innovation = inum;
+            this.isExpressed = e;
+        }
+        
+        // methods
+        bool IEquatable<Connection>.Equals(Connection? other)
+        {
+            if(other == null)
+            {
+                return false;
+            }
+
+            if(this.input.Equals(other.Input) && this.output.Equals(other.Output))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        // properties
         public Node Input
         {
             get {return input;}
@@ -33,15 +59,6 @@ namespace NEAT
         public int Innovation
         {
             get {return innovation;}
-        }
-
-        public Connection(Node i, Node o, double w, int inum, bool e)
-        {
-            this.input = i;
-            this.output = o;
-            this.weight = w;
-            this.innovation = inum;
-            this.isExpressed = e;
         }
     }
 }

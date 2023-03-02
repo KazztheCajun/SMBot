@@ -10,52 +10,19 @@ namespace NEAT
         // Fields
         private List<Node> nodes;
         private List<Connection> connections;
+        private Population population;
         private int id;
-        private int nextInnovation;
         private int nextNode;
         private double fitness;
         private double adjustedFitness;
         private Random rand;
 
-        // Properties
-        public List<Node> Nodes
-        {
-            get {return nodes;}
-        }
-
-        public List<Connection> Connections
-        {
-            get {return connections;}
-        }
-
-        public int ID
-        {
-            get {return ID;}
-        }
-
-        public double Fitness
-        {
-            get {return fitness;}
-            set {this.fitness = value;}
-        }
-
-        public double AdjustedFitness
-        {
-            get {return adjustedFitness;}
-            set {this.adjustedFitness = value;}
-        }
-
-        public Random Rand
-        {
-            get {return this.rand;}
-        }
-
-        public Genome(int id, int inputs, int outputs, Random r)
+        public Genome(int id, int inputs, int outputs, Population p, Random r)
         {
             this.nodes = new List<Node>();
             this.connections = new List<Connection>();
+            this.population = p;
             this.id = id;
-            this.nextInnovation = 1;
             this.nextNode = 1;
             this.rand = r;
 
@@ -106,9 +73,7 @@ namespace NEAT
 
         private int NextInnovation()
         {
-            int temp = nextInnovation;
-            nextInnovation++;
-            return temp;
+            return population.NextInnovation();
         }
 
         // IEquatable override
@@ -160,6 +125,32 @@ namespace NEAT
             return $"Genome: {id}\nInputs:\n{ListNodes(NodeType.Sensor)}\nHidden Nodes:\n{ListNodes(NodeType.Hidden)}\nOutput:\n{ListNodes(NodeType.Output)}\nConnections:\n{ListConnections()}";
         }
 
-        
+        // Properties
+        public List<Node> Nodes
+        {
+            get {return nodes;}
+        }
+        public List<Connection> Connections
+        {
+            get {return connections;}
+        }
+        public int ID
+        {
+            get {return ID;}
+        }
+        public double Fitness
+        {
+            get {return fitness;}
+            set {this.fitness = value;}
+        }
+        public double AdjustedFitness
+        {
+            get {return adjustedFitness;}
+            set {this.adjustedFitness = value;}
+        }
+        public Random Rand
+        {
+            get {return this.rand;}
+        }
     }
 }

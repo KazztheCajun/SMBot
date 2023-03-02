@@ -9,14 +9,12 @@ namespace NEAT
 
         // fields
         private IType type;
-        private Node input;
-        private Node output;
-        private Connection? number1;
+        private Connection number1;
         private Connection? number2;
         private int? previousNumber;
 
         // base constructor
-        public Innovation(String t, Node i, Node o)
+        public Innovation(String t, Connection c1)
         {
             switch (t)
             {
@@ -27,56 +25,17 @@ namespace NEAT
                     this.type = IType.NODE;
                     break;
             }
-            
-            this.input = i;
-            this.output = o;
-        }
-
-        // New Link Constructor
-        public Innovation(String t, Node i, Node o, Connection c1) :this(t, i, o)
-        {
-            number1 = c1;
+            this.number1 = c1;
         }
 
         // New Node Constructor
-        public Innovation(String t, Node i, Node o, Connection c1, Connection c2, int pn) :this(t, i, o)
+        public Innovation(String t, Connection c1, Connection c2, int pn) :this(t, c1)
         {
-            this.number1 = c1;
             this.number2 = c2;
             this.previousNumber = pn;
         }
-        
 
-        // properties
-        public IType Type 
-        {
-            get {return this.type;}
-        }
-
-        public Node Input
-        {
-            get {return this.input;}
-        }
-
-        public Node Output
-        {
-            get {return this.output;}
-        }
-
-        public Connection Number1
-        {
-            get {return this.number1;}
-        }
-
-        public Connection Number2
-        {
-            get {return this.number2;}
-        }
-
-        public int PreviousNumber
-        {
-            get {return this.previousNumber;}
-        }
+        // methods
 
         bool IEquatable<Innovation>.Equals(Innovation? other)
         {
@@ -84,28 +43,96 @@ namespace NEAT
             {
                 return false;
             }
+            
+            // An Innovation is equal to another Innovation if the following are true:
+            // -- NEW NODE INNOVATION:
+            // -- this Innovation's first connection equals the other Innovation's other first connection
+            // -- this Innovation's first connection equals the other Innovation's other second connection
+            // -- this Innovation's previous number equals the other Innovation's previous number
+            // -- NEW LINK INNOVATION:
+            // -- this Innovation's connection equals the other Innovation's connection
 
-            if(this.type == other.Type && this.input.Equals(other.input) && this.output.Equals(other.output))
+            switch (this.type)
             {
-                return true;
+                case IType.NODE:
+                    if(this.number2 == null)
+                    {
+                        return false;
+                    }
+
+                    if(this.number1.Equals(other.Number1) && this.number2.Equals(other.Number2) && this.previousNumber == other.previousNumber)
+                    {
+                        return true;
+                    }
+                    break;
+
+                case IType.LINK:
+                    if(this.number1.Equals(other.Number1))
+                    {
+                        return true;
+                    }
+                    break;
             }
+            
 
             return false;
         }
 
         bool Equals(Connection? c)
         {
-            if(c == null)
+            // An Innovation is equal to a Connection if the following are true:
+            // -- NEW NODE INNOVATION:
+            // -- the Innovation's first Connection input node equals the given Connection's input node
+            // -- the Innovation's second Connection output node equals the given Connection's output node
+            // -- the Innovation's previous number equals the given Connection's innovation number
+            // -- NEW LINK INNOVATION:
+            // -- the Innovation's first Connection equals the given Connection
+
+            if (c == null)
             {
                 return false;
             }
-
-            if(this.input.Equals(c.Input) && this.output.Equals(c.Output) && this.number1.Innovation == c.Innovation)
+            
+            switch (this.type)
             {
-                return true;
+                case IType.NODE:
+                    if (this.number2 == null)
+                    {
+                        return false;
+                    }
+                    if (this.number1.Input.Equals(c.Input) && this.number2.Output.Equals(c.Output) && this.previousNumber == c.Innovation)
+                    {
+                        return true;
+                    }
+                    break;
+                case IType.LINK:
+                    if (this.number1.Equals(c))
+                    {
+                        return true;
+                    }
+                    break;
             }
 
+            
             return false;
+        }
+
+        // properties
+        public IType Type 
+        {
+            get {return this.type;}
+        }
+        public Connection Number1
+        {
+            get {return this.number1;}
+        }
+        public Connection? Number2
+        {
+            get {return this.number2;}
+        }
+        public int? PreviousNumber
+        {
+            get {return this.previousNumber;}
         }
     }
 }

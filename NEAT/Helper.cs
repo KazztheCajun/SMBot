@@ -4,10 +4,12 @@ namespace NEAT
 {
     class Helper
     {
+        // fields
         private static double lastGauss;
         private static bool hasGauss;
-
         private static Random rand = new Random();
+
+        // methods
         public static double NextGaussian()
         {
             if(hasGauss) // if a value has already been calculated
