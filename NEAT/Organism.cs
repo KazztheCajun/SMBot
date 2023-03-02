@@ -25,7 +25,7 @@ namespace NEAT
             this.species = null;
             this.isDead = false;
             this.isChampion = false;
-            this.network = Network.Genesis(genome);
+            this.network = Network.Genesis(genome, genome.ID);
         }
 
         public void UpdatePhenotype()

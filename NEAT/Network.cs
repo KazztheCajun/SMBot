@@ -122,7 +122,7 @@ namespace NEAT
         }
         private int Links
         {
-            get {return this.links}
+            get {return this.links;}
         }
         private String Name
         {
