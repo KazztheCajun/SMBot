@@ -11,6 +11,7 @@ namespace NEAT
         private IType type;
         private Connection number1;
         private Connection? number2;
+        private int? nodeID;
         private int? previousNumber;
 
         // base constructor
@@ -29,9 +30,10 @@ namespace NEAT
         }
 
         // New Node Constructor
-        public Innovation(String t, Connection c1, Connection c2, int pn) :this(t, c1)
+        public Innovation(String t, Connection c1, Connection c2, Node n, int pn) :this(t, c1)
         {
             this.number2 = c2;
+            this.nodeID = n.Number;
             this.previousNumber = pn;
         }
 
@@ -133,6 +135,11 @@ namespace NEAT
         public int? PreviousNumber
         {
             get {return this.previousNumber;}
+        }
+        public int? NodeID
+        {
+            get {return this.nodeID;}
+            set {this.nodeID = value;}
         }
     }
 }

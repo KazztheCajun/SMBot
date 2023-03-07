@@ -108,6 +108,11 @@ namespace NEAT
         {
             get {return this.genomes;}
         }
+
+        public List<Innovation> Innovations
+        {
+            get {return this.innovations;}
+        }
     }
 
 }

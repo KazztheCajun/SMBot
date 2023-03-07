@@ -59,6 +59,7 @@ namespace NEAT
         public int Innovation
         {
             get {return innovation;}
+            set {this.innovation = value;}
         }
     }
 }

@@ -5,7 +5,7 @@ namespace NEAT
     class Genome : IEquatable<Genome>
     {
         // enumerated values
-        public enum NodeType {Sensor, Hidden, Output}
+        public enum NodeType {SENSOR, HIDDEN, OUTPUT, BIAS}
 
         // Fields
         private List<Node> nodes;
@@ -29,13 +29,13 @@ namespace NEAT
             // create nodes for the input
             for (int i = 0; i < inputs; i++)
             {
-                nodes.Add(new Node(NextNode(), NodeType.Sensor, this));
+                nodes.Add(new Node(NextNode(), NodeType.SENSOR, this));
             }
 
             // create nodes for the output
             for (int i = 0; i < outputs; i++)
             {
-                nodes.Add(new Node(NextNode(), NodeType.Output, this));
+                nodes.Add(new Node(NextNode(), NodeType.OUTPUT, this));
             }
 
             // create connections between the inputs and outputs
@@ -43,7 +43,7 @@ namespace NEAT
             {
                 foreach(Node y in nodes)
                 {
-                    if(x.Type == NodeType.Sensor && y.Type == NodeType.Output)
+                    if(x.Type == NodeType.SENSOR && y.Type == NodeType.OUTPUT)
                     {
                         NewConnection(x, y);
                     }
@@ -51,19 +51,51 @@ namespace NEAT
             }
         }
 
-        public void NewConnection(Node i, Node o, Nullable<double> weight = null)
+        public void NewConnection(Node i, Node o, bool testInnovation, Nullable<double> weight = null, Nullable<int> inum = null)
         {
+            Connection temp; // construct a new Connection from the given information
             if (weight == null) // if not give a weight, select a random one between -3 and 3
             {
-                connections.Add(new Connection(i, o, (rand.NextDouble()*6) - 3, NextInnovation(), true));
+                temp = new Connection(i, o, (rand.NextDouble()*6) - 3, 0, true);
             }
             else // otherwise, use the given value
             {
-                connections.Add(new Connection(i, o, weight.Value, NextInnovation(), true));
+                temp = new Connection(i, o, weight.Value, 0, true);
             }
-            o.Inputs.Add(i);
+
+            if(inum != null)
+            {
+                temp.Innovation = (int) inum;
+            }
+
+            if(testInnovation)
+            {
+                CheckInnovation(temp);
+            }
+            
+            connections.Add(temp); // add the connection gene to the list of connection genes
+            o.Inputs.Add(i); // add input node to the output node's input list
         }
 
+        private void CheckInnovation(Connection c)
+        {
+            // check if this connection is a novel innovation or not
+            bool isNovel = false;
+            foreach(Innovation n in this.population.Innovations)
+            {
+                if(n.Equals(c))
+                {
+                    c.Innovation = n.Number1.Innovation; // give it the existing innovation number
+                    isNovel = true;
+                    break;
+                }
+            }
+
+            if(!isNovel) // if no equivalent Innovation is found
+            {
+                c.Innovation = NextInnovation(); // give it the next available innovation number
+            }
+        }
         public int NextNode()
         {
             int temp = nextNode;
@@ -125,11 +157,11 @@ namespace NEAT
             //Genome: ####
             //    Inputs:
             //        {List of input nodes}
-            //    Hidden:
+            //    .:
             //        {List of hidden nodes}
             //    Outouts:
             //        {List of output nodes}
-            return $"Genome: {this.id}\nInputs:\n{ListNodes(NodeType.Sensor)}\nHidden Nodes:\n{ListNodes(NodeType.Hidden)}\nOutput:\n{ListNodes(NodeType.Output)}\nConnections:\n{ListConnections()}";
+            return $"Genome: {this.id}\nInputs:\n{ListNodes(NodeType.SENSOR)}\nHidden Nodes:\n{ListNodes(NodeType.HIDDEN)}\nOutput:\n{ListNodes(NodeType.OUTPUT)}\nConnections:\n{ListConnections()}";
         }
 
         public String Summery()
@@ -141,7 +173,7 @@ namespace NEAT
             //        {List of hidden nodes}
             //    Outouts:
             //        {List of output nodes}
-            return $"Summery:\n  Inputs:\n{ListNodes(NodeType.Sensor)}\n  Hidden Nodes:\n{ListNodes(NodeType.Hidden)}\n  Output:\n{ListNodes(NodeType.Output)}\n  Connections:\n{ListConnections()}";
+            return $"Summery:\n  Inputs:\n{ListNodes(NodeType.SENSOR)}\n  Hidden Nodes:\n{ListNodes(NodeType.HIDDEN)}\n  Output:\n{ListNodes(NodeType.OUTPUT)}\n  Connections:\n{ListConnections()}";
         }
 
         // Properties
@@ -170,6 +202,11 @@ namespace NEAT
         public Random Rand
         {
             get {return this.rand;}
+        }
+
+        public Population Population
+        {
+            get {return this.population;}
         }
     }
 }

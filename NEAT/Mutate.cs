@@ -19,7 +19,8 @@ namespace NEAT
             while (true) // loop until a new connection is made
             {
                 Node node = g.Nodes[g.Rand.Next(g.Nodes.Count)]; // select a random node
-                List<Node> unconnected = g.Nodes.FindAll(n => !n.Inputs.Contains<Node>(node)); // find all other nodes that it is not connected to
+                // find all other non-sensor nodes that it is not connected to
+                List<Node> unconnected = g.Nodes.FindAll(n => !n.Inputs.Contains<Node>(node) && n.Type != Genome.NodeType.SENSOR); 
                 if (unconnected.Count > 0) // if there are any unconnected nodes
                 {
                     Node other = unconnected[g.Rand.Next(unconnected.Count)]; // select a random one
@@ -38,7 +39,24 @@ namespace NEAT
                 c = g.Connections[g.Rand.Next(g.Connections.Count)];
             }
             c.IsExpressed = false; // disable the old connection
-            Node n = new Node(g.NextNode(), Genome.NodeType.Hidden, g); // create a new node to inside the old connection
+            bool isNovel = false;
+            foreach(Innovation i in g.Population.Innovations)
+            {
+                if(i.Type == Innovation.IType.NODE && i.Equals(c)) // if the innovation is a NEW NODE and it equals the selected connection
+                {
+                    // it is not novel
+                    isNovel = true;
+                    // generate new node
+                    Node n = new Node((int) i.NodeID, Genome.NodeType.HIDDEN, g); // NodeID is not null for IType.NODE innovations
+                    g.Nodes.Add(n);
+                    g.NewConnection(c.Input, n, false, Helper.NextGaussian(), i.Number1.Innovation);
+                    g.NewConnection(n, c.Output, false, c.Weight, i.Number2.Innovation); // Number2 is not null for IType.Node innovations
+                }
+            }
+            if(!isNovel) // if the Innovation is novel
+            {
+                Innovation newI = new Innovation("node", )
+            }
             g.Nodes.Add(n); // add the new node to the list of nodes in the Genome
             g.NewConnection(c.Input, n); // create a new connection between the old input and the new node
             g.NewConnection(n, c.Output, weight: c.Weight); // create a new connection between the new node and the old output
