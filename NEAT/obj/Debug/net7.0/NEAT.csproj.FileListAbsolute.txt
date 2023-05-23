@@ -13,3 +13,18 @@ C:\Users\raautin\OneDrive - University of New Orleans\Desktop\GameBot Research\S
 C:\Users\raautin\OneDrive - University of New Orleans\Desktop\GameBot Research\SMBot\NEAT\obj\Debug\net7.0\NEAT.pdb
 C:\Users\raautin\OneDrive - University of New Orleans\Desktop\GameBot Research\SMBot\NEAT\obj\Debug\net7.0\NEAT.genruntimeconfig.cache
 C:\Users\raautin\OneDrive - University of New Orleans\Desktop\GameBot Research\SMBot\NEAT\obj\Debug\net7.0\ref\NEAT.dll
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\bin\Debug\net7.0\NEAT.exe
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\bin\Debug\net7.0\NEAT.deps.json
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\bin\Debug\net7.0\NEAT.runtimeconfig.json
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\bin\Debug\net7.0\NEAT.dll
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\bin\Debug\net7.0\NEAT.pdb
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\obj\Debug\net7.0\NEAT.csproj.AssemblyReference.cache
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\obj\Debug\net7.0\NEAT.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\obj\Debug\net7.0\NEAT.AssemblyInfoInputs.cache
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\obj\Debug\net7.0\NEAT.AssemblyInfo.cs
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\obj\Debug\net7.0\NEAT.csproj.CoreCompileInputs.cache
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\obj\Debug\net7.0\NEAT.dll
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\obj\Debug\net7.0\refint\NEAT.dll
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\obj\Debug\net7.0\NEAT.pdb
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\obj\Debug\net7.0\NEAT.genruntimeconfig.cache
+C:\Users\aauti\Dropbox\AAron\School Work\Thesis Research\SMBot\NEAT\obj\Debug\net7.0\ref\NEAT.dll

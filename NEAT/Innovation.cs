@@ -39,7 +39,7 @@ namespace NEAT
 
         // methods
 
-        bool IEquatable<Innovation>.Equals(Innovation? other)
+        public bool Equals(Innovation? other)
         {
             if(other == null)
             {
@@ -80,7 +80,7 @@ namespace NEAT
             return false;
         }
 
-        bool Equals(Connection? c)
+        public bool EqualsConnection(Connection c)
         {
             // An Innovation is equal to a Connection if the following are true:
             // -- NEW NODE INNOVATION:
@@ -120,22 +120,10 @@ namespace NEAT
         }
 
         // properties
-        public IType Type 
-        {
-            get {return this.type;}
-        }
-        public Connection Number1
-        {
-            get {return this.number1;}
-        }
-        public Connection? Number2
-        {
-            get {return this.number2;}
-        }
-        public int? PreviousNumber
-        {
-            get {return this.previousNumber;}
-        }
+        public IType Type => this.type;
+        public Connection Number1 => this.number1;
+        public Connection? Number2 => this.number2;
+        public int? PreviousNumber => this.previousNumber;
         public int? NodeID
         {
             get {return this.nodeID;}

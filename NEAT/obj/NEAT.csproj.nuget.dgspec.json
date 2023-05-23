@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\raautin\\OneDrive - University of New Orleans\\Desktop\\GameBot Research\\SMBot\\NEAT\\NEAT.csproj": {}
+    "C:\\Users\\aauti\\Dropbox\\AAron\\School Work\\Thesis Research\\SMBot\\NEAT\\NEAT.csproj": {}
   },
   "projects": {
-    "C:\\Users\\raautin\\OneDrive - University of New Orleans\\Desktop\\GameBot Research\\SMBot\\NEAT\\NEAT.csproj": {
+    "C:\\Users\\aauti\\Dropbox\\AAron\\School Work\\Thesis Research\\SMBot\\NEAT\\NEAT.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\raautin\\OneDrive - University of New Orleans\\Desktop\\GameBot Research\\SMBot\\NEAT\\NEAT.csproj",
+        "projectUniqueName": "C:\\Users\\aauti\\Dropbox\\AAron\\School Work\\Thesis Research\\SMBot\\NEAT\\NEAT.csproj",
         "projectName": "NEAT",
-        "projectPath": "C:\\Users\\raautin\\OneDrive - University of New Orleans\\Desktop\\GameBot Research\\SMBot\\NEAT\\NEAT.csproj",
-        "packagesPath": "C:\\Users\\raautin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\raautin\\OneDrive - University of New Orleans\\Desktop\\GameBot Research\\SMBot\\NEAT\\obj\\",
+        "projectPath": "C:\\Users\\aauti\\Dropbox\\AAron\\School Work\\Thesis Research\\SMBot\\NEAT\\NEAT.csproj",
+        "packagesPath": "C:\\Users\\aauti\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aauti\\Dropbox\\AAron\\School Work\\Thesis Research\\SMBot\\NEAT\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\raautin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\aauti\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -55,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

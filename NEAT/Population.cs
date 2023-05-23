@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace NEAT
 {        
@@ -92,27 +93,20 @@ namespace NEAT
         private String ListGenomes(bool v = false)
         {
             
-            String temp = "";
+            StringBuilder temp = new StringBuilder("");
             foreach(Genome g in genomes)
             {
-                int ins = g.Nodes.FindAll(n => n.Type == Genome.NodeType.Sensor).Count;
-                int outs = g.Nodes.FindAll(n => n.Type == Genome.NodeType.Output).Count;
-                int hid = g.Nodes.FindAll(n => n.Type == Genome.NodeType.Hidden).Count;
-                temp += $"Genome: {g.ID}\nTotal Connections: {g.Connections.Count}\nTotal Nodes: {g.Nodes.Count}\n  -- Input: {ins}\n  -- Output: {outs}\n  -- Hidden: {hid}\n{(v ? $"{g.Summery()}" : "\n")}";
-                temp += "\n*********************************************\n";
+                int ins = g.Nodes.FindAll(n => n.Type == Genome.NodeType.SENSOR).Count;
+                int outs = g.Nodes.FindAll(n => n.Type == Genome.NodeType.OUTPUT).Count;
+                int hid = g.Nodes.FindAll(n => n.Type == Genome.NodeType.HIDDEN).Count;
+                temp.Append($"Genome: {g.ID}\nTotal Connections: {g.Connections.Count}\nTotal Nodes: {g.Nodes.Count}\n  -- Input: {ins}\n  -- Output: {outs}\n  -- Hidden: {hid}\n{(v ? $"{g.Summery()}" : "\n")}");
+                temp.Append("\n*********************************************\n");
             }
-            return temp;
+            return temp.ToString();
         }
         // properties
-        public List<Genome> Genomes
-        {
-            get {return this.genomes;}
-        }
-
-        public List<Innovation> Innovations
-        {
-            get {return this.innovations;}
-        }
+        public List<Genome> Genomes => genomes;
+        public List<Innovation> Innovations => innovations;
     }
 
 }

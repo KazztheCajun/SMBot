@@ -47,42 +47,15 @@ namespace NEAT
 
 
         // properties
-        public int ID
-        {
-            get {return this.id;}
-        }
-        public int Age
-        {
-            get {return this.age;}
-        }
-        public int Size
-        {
-            get {return this.organisms != null ? this.organisms.Count : 0;} // if the organisms list is null, there are 0 organisms in the species
-        }
-        public int LastImproved
-        {
-            get {return this.lastImproved;}
-        }
-        public double AverageFitness
-        {
-            get {return this.averageFitness;}
-        }
-        public double MaxFitness
-        {
-            get {return this.maxFitness;}
-        }
-        public bool IsNovel
-        {
-            get {return this.isNovel;}
-        }
-        public bool IsChecked
-        {
-            get {return this.isChecked;}
-        }
-
-        public List<Organism> Organisms
-        {
-            get {return this.organisms;}
-        }
+        public int ID => this.id;
+        public int Age => this.age;
+        public int Size => this.organisms != null ? this.organisms.Count : 0; // if the organisms list is null, there are 0 organisms in the species
+        public int LastImproved => this.lastImproved;
+        public double AverageFitness => this.averageFitness;
+        public double MaxFitness => this.maxFitness;
+        public bool IsNovel => this.isNovel;
+        public bool IsChecked => this.isChecked;
+        public List<Organism> Organisms => this.organisms;
+        
     }
 }

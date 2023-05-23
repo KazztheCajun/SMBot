@@ -14,25 +14,15 @@ namespace NEAT
         private int number;
 
         // properties
-        public int Number
-        {
-            get {return number;}
-        }
-        public double Potential
-        {
-            get {return potential;}
-        }
-
+        public int Number => number;
+        public double Potential => potential;
+        public List<Node> Inputs => inputs;
         public Genome.NodeType Type
         {
             get {return type;}
             set {type = value;}
         }
 
-        public List<Node> Inputs
-        {
-            get {return inputs;}
-        }
 
         public Node(int n, Genome.NodeType t, Genome g)
         {

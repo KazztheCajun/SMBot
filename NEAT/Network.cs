@@ -6,8 +6,6 @@ namespace NEAT
     {
         // fields
         private Genome genome;
-        private int nodes;
-        private int links;
         private String name;
         private List<Node> inputs;
         private List<Node> outputs;
@@ -18,11 +16,9 @@ namespace NEAT
         {
             this.genome = g;
             this.name = name;
-            this.inputs = genome.Nodes.FindAll(n => n.Type == Genome.NodeType.Sensor);
-            this.outputs = genome.Nodes.FindAll(n => n.Type == Genome.NodeType.Output);
+            this.inputs = genome.Nodes.FindAll(n => n.Type == Genome.NodeType.SENSOR);
+            this.outputs = genome.Nodes.FindAll(n => n.Type == Genome.NodeType.OUTPUT);
             this.id = netID;
-            this.nodes = -1; // means the number of nodes has not been counted
-            this.links = -1; // means the number of links has not been counted
         }
 
         // methods
@@ -51,31 +47,13 @@ namespace NEAT
 
         }
 
-        public void CountNodes()
-        {
-            nodes = 0;
-            foreach(Node n in genome.Nodes)
-            {
-                nodes++;
-            }
-        }
-
-        public void CountLinks()
-        {
-            links = 0;
-            foreach(Connection c in genome.Connections)
-            {
-                links++;
-            }
-        }
-
         public int MaxDepth()
         {
             int max = 0;
             int current = 0; // initialize the current max path
             foreach(Node n in genome.Nodes)
             {
-                if(n.Type == Genome.NodeType.Output) // start at the output node
+                if(n.Type == Genome.NodeType.OUTPUT) // start at the output node
                 {
                     // set the max depth of an output node to the longest chain of connected nodes ending with that output node, excluding the input and output node of that chain
                     current = Depth(0, n);  
@@ -92,7 +70,7 @@ namespace NEAT
         {
             // recursivly walk down the list of nodes connected to the given node and return the depth when an input node is hit
             int max = d; // set max depth for this node to the current max depth
-            if(n.Type == Genome.NodeType.Sensor) // recursivly walk down the list of connected nodes to the end
+            if(n.Type == Genome.NodeType.SENSOR) // recursivly walk down the list of connected nodes to the end
             {
                 return d; // return the current depth if the current node is an input node
             }
@@ -112,34 +90,17 @@ namespace NEAT
         }
 
         // properties
-        private Genome Genome
-        {
-            get {return this.genome;}
-        }
-        private int Nodes
-        {
-            get {return this.nodes;}
-        }
-        private int Links
-        {
-            get {return this.links;}
-        }
-        private String Name
+        public Genome Genome => this.genome;
+        public int Nodes => this.genome.Nodes.Count;
+        public int Links => this.genome.Connections.Count;
+        public String Name
         {
             get {return this.name;}
             set {this.name = value;}
         }
-        private List<Node> Inputs
-        {
-            get {return this.inputs;}
-        }
-        private List<Node> Outputs
-        {
-            get {return this.outputs;}
-        }
-        private int ID
-        {
-            get {return this.id;}
-        }
+        public List<Node> Inputs => this.inputs;
+        public List<Node> Outputs => this.outputs;
+        public int ID => this.id;
+
     }
 }

@@ -13,7 +13,7 @@ namespace NEAT
         private static double DisableGeneProb = 0.4;
         private static double StepSize = 0.1;
 
-        // Helper functions
+        // public functions
         public static void AddConnection(Genome g)
         {
             while (true) // loop until a new connection is made
@@ -24,7 +24,7 @@ namespace NEAT
                 if (unconnected.Count > 0) // if there are any unconnected nodes
                 {
                     Node other = unconnected[g.Rand.Next(unconnected.Count)]; // select a random one
-                    g.NewConnection(node, other); // create a new connection gene
+                    g.NewConnection(node, other, null); // create a new connection gene
                     break; // exit the loop
                 }
             }
@@ -39,27 +39,35 @@ namespace NEAT
                 c = g.Connections[g.Rand.Next(g.Connections.Count)];
             }
             c.IsExpressed = false; // disable the old connection
-            bool isNovel = false;
-            foreach(Innovation i in g.Population.Innovations)
+            Innovation? innov = null; // placholder innovation
+            Connection input;
+            Connection output;
+            Node n;
+            foreach(Innovation i in g.Population.Innovations) // check the list of innovations to see if this NEW NODE mutation has been done before
             {
-                if(i.Type == Innovation.IType.NODE && i.Equals(c)) // if the innovation is a NEW NODE and it equals the selected connection
+                if(i.Type == Innovation.IType.NODE && i.EqualsConnection(c)) // if the innovation is a NEW NODE and it equals the selected connection
                 {
                     // it is not novel
-                    isNovel = true;
-                    // generate new node
-                    Node n = new Node((int) i.NodeID, Genome.NodeType.HIDDEN, g); // NodeID is not null for IType.NODE innovations
-                    g.Nodes.Add(n);
-                    g.NewConnection(c.Input, n, false, Helper.NextGaussian(), i.Number1.Innovation);
-                    g.NewConnection(n, c.Output, false, c.Weight, i.Number2.Innovation); // Number2 is not null for IType.Node innovations
+                    innov = i;
+                    break;
                 }
             }
-            if(!isNovel) // if the Innovation is novel
+
+            if(innov != null) // if the Innovation is not novel
             {
-                Innovation newI = new Innovation("node", )
+                // generate new node | may want to add some error checking here
+                n = new Node((int) innov.NodeID, Genome.NodeType.HIDDEN, g); // NodeID is not null for IType.NODE innovations
+                g.Nodes.Add(n);
+                input = g.NewConnection(c.Input, n, innov.Number1.Innovation, Helper.NextGaussian());
+                output = g.NewConnection(n, c.Output, innov.Number2.Innovation, c.Weight); // Number2 is not null for IType.Node innovations
+                return;
             }
-            g.Nodes.Add(n); // add the new node to the list of nodes in the Genome
-            g.NewConnection(c.Input, n); // create a new connection between the old input and the new node
-            g.NewConnection(n, c.Output, weight: c.Weight); // create a new connection between the new node and the old output
+            // if the Innovation is novel
+            n = new Node(g.NextNode(), Genome.NodeType.HIDDEN, g); // spawn a new node
+            input = g.NewConnection(c.Input, n, g.NextInnovation, Helper.NextGaussian()); // create an input connection for the old input -> new node
+            output = g.NewConnection(n, c.Output, g.NextInnovation, c.Weight); // create an output connection for the new node -> old output
+            innov = new Innovation("node", input, output, n, c.Innovation); // create a new innovation for this NEW NODE mutation
+            g.Population.Innovations.Add(innov); // add it to the list of innovations in the population
         }
 
         public static void DisableGene(Genome g)

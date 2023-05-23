@@ -22,14 +22,15 @@ namespace NEAT
         }
         
         // methods
-        bool IEquatable<Connection>.Equals(Connection? other)
+        public bool Equals(Connection? other)
         {
             if(other == null)
             {
+                Console.WriteLine("is the connection null");
                 return false;
             }
 
-            if(this.input.Equals(other.Input) && this.output.Equals(other.Output))
+            if(this.input.Number == other.Input.Number && this.output.Number == other.Output.Number)
             {
                 return true;
             }
