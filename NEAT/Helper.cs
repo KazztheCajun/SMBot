@@ -37,6 +37,18 @@ namespace NEAT
             }
             
         }
+
+        public static void GaussianNoise(Connection c)
+        {
+            // adds gaussian noise to the weight of a Connection
+            c.Weight += Helper.NextGaussian();
+        }
+
+        public static void ColdGaussian(Connection c)
+        {
+            // sets the weight of a connection to a normal random number
+            c.Weight = Helper.NextGaussian();
+        }
     }
     
 }

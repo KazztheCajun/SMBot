@@ -24,7 +24,7 @@ namespace NEAT
                 if (unconnected.Count > 0) // if there are any unconnected nodes
                 {
                     Node other = unconnected[g.Rand.Next(unconnected.Count)]; // select a random one
-                    g.NewConnection(node, other, null); // create a new connection gene
+                    NewConnection(g, node, other, null); // create a new connection gene
                     break; // exit the loop
                 }
             }
@@ -58,15 +58,16 @@ namespace NEAT
                 // generate new node | may want to add some error checking here
                 n = new Node((int) innov.NodeID, Genome.NodeType.HIDDEN, g); // NodeID is not null for IType.NODE innovations
                 g.Nodes.Add(n);
-                input = g.NewConnection(c.Input, n, innov.Number1.Innovation, Helper.NextGaussian());
-                output = g.NewConnection(n, c.Output, innov.Number2.Innovation, c.Weight); // Number2 is not null for IType.Node innovations
+                input = NewConnection(g, c.Input, n, innov.Number1.Innovation, Helper.NextGaussian());
+                output = NewConnection(g, n, c.Output, innov.Number2.Innovation, c.Weight); // Number2 is not null for IType.Node innovations
                 return;
             }
             // if the Innovation is novel
             n = new Node(g.NextNode(), Genome.NodeType.HIDDEN, g); // spawn a new node
-            input = g.NewConnection(c.Input, n, g.NextInnovation, Helper.NextGaussian()); // create an input connection for the old input -> new node
-            output = g.NewConnection(n, c.Output, g.NextInnovation, c.Weight); // create an output connection for the new node -> old output
+            input = NewConnection(g, c.Input, n, g.NextInnovation, Helper.NextGaussian()); // create an input connection for the old input -> new node
+            output = NewConnection(g, n, c.Output, g.NextInnovation, c.Weight); // create an output connection for the new node -> old output
             innov = new Innovation("node", input, output, n, c.Innovation); // create a new innovation for this NEW NODE mutation
+            g.Nodes.Add(n);
             g.Population.Innovations.Add(innov); // add it to the list of innovations in the population
         }
 
@@ -107,21 +108,61 @@ namespace NEAT
             {
                 if(t == "noise")
                 {
-                    GaussianNoise(c);
+                    Helper.GaussianNoise(c);
                 }
             }
         }
 
-        private static void GaussianNoise(Connection c)
+        public static Connection NewConnection(Genome g, Node i, Node o, Nullable<int> inum,  Nullable<double> weight = null)
         {
-            // adds gaussian noise to the weight of a Connection
-            c.Weight += Helper.NextGaussian();
+            Connection temp; // construct a new Connection from the given information
+            if (weight == null) // if not given a weight, select a random one between -3 and 3
+            {
+                temp = new Connection(i, o, (g.Rand.NextDouble()*6) - 3, 0, true);
+            }
+            else // otherwise, use the given value
+            {
+                temp = new Connection(i, o, weight.Value, 0, true);
+            }
+
+            if(inum != null) // if given an innovation number, use that one
+            {
+                temp.Innovation = (int) inum;
+            }
+            else // otherwise, check the Population's list of innovations and assin accordingly
+            {
+                CheckInnovation(g, temp);
+            }
+            
+            g.Connections.Add(temp); // add the connection gene to the list of connection genes
+            o.Inputs.Add(i); // add input node to the output node's input list
+            return temp;
         }
 
-        private static void ColdGaussian(Connection c)
+        private static void CheckInnovation(Genome g, Connection c)
         {
-            // sets the weight of a connection to a normal random number
-            c.Weight = Helper.NextGaussian();
+            // check if this connection is a novel innovation or not
+            bool isNovel = true;
+            // for each link innovation in the population
+            var list = g.Population.Innovations.FindAll(x => x.Type == Innovation.IType.LINK);
+            //Console.WriteLine(list.Count);
+            foreach(Innovation i in list)
+            {
+                //Console.WriteLine($"Checking connection:\nInnovation #: {i.Number1.Innovation} -> ({i.Number1.Input.Number}, {i.Number1.Output.Number}) vs ({c.Input.Number}, {c.Output.Number}) | {i.EqualsConnection(c)}");
+                if(i.EqualsConnection(c))
+                {
+                    
+                    c.Innovation = i.Number1.Innovation; // give it the existing innovation number
+                    isNovel = false;
+                    break;
+                }
+            }
+
+            if(isNovel) // if no equivalent Innovation is found
+            {
+                c.Innovation = g.NextInnovation; // give it the next available innovation number
+                g.Population.Innovations.Add(new Innovation("link", c));
+            }
         }
  
     }

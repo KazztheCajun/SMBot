@@ -99,6 +99,7 @@ namespace NEAT
                 int ins = g.Nodes.FindAll(n => n.Type == Genome.NodeType.SENSOR).Count;
                 int outs = g.Nodes.FindAll(n => n.Type == Genome.NodeType.OUTPUT).Count;
                 int hid = g.Nodes.FindAll(n => n.Type == Genome.NodeType.HIDDEN).Count;
+                //Console.Out.WriteLine(hid);
                 temp.Append($"Genome: {g.ID}\nTotal Connections: {g.Connections.Count}\nTotal Nodes: {g.Nodes.Count}\n  -- Input: {ins}\n  -- Output: {outs}\n  -- Hidden: {hid}\n{(v ? $"{g.Summery()}" : "\n")}");
                 temp.Append("\n*********************************************\n");
             }

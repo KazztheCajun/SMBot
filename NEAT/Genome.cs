@@ -45,62 +45,12 @@ namespace NEAT
                 {
                     if (x.Type == NodeType.SENSOR && y.Type == NodeType.OUTPUT)
                     {
-                        NewConnection(x, y, null);
+                        Mutate.NewConnection(this, x, y, null);
                     }
                 }
             }
         }
-        public Connection NewConnection(Node i, Node o, Nullable<int> inum,  Nullable<double> weight = null)
-        {
-            Connection temp; // construct a new Connection from the given information
-            if (weight == null) // if not given a weight, select a random one between -3 and 3
-            {
-                temp = new Connection(i, o, (rand.NextDouble()*6) - 3, 0, true);
-            }
-            else // otherwise, use the given value
-            {
-                temp = new Connection(i, o, weight.Value, 0, true);
-            }
 
-            if(inum != null) // if given an innovation number, use that one
-            {
-                temp.Innovation = (int) inum;
-            }
-            else // otherwise, check the Population's list of innovations and assin accordingly
-            {
-                CheckInnovation(temp);
-            }
-            
-            connections.Add(temp); // add the connection gene to the list of connection genes
-            o.Inputs.Add(i); // add input node to the output node's input list
-            return temp;
-        }
-
-        private void CheckInnovation(Connection c)
-        {
-            // check if this connection is a novel innovation or not
-            bool isNovel = true;
-            // for each link innovation in the population
-            var list = this.population.Innovations.FindAll(x => x.Type == Innovation.IType.LINK);
-            Console.WriteLine(list.Count);
-            foreach(Innovation i in list)
-            {
-                Console.WriteLine($"Checking connection:\nInnovation #: {i.Number1.Innovation} -> ({i.Number1.Input.Number}, {i.Number1.Output.Number}) vs ({c.Input.Number}, {c.Output.Number}) | {i.EqualsConnection(c)}");
-                if(i.EqualsConnection(c))
-                {
-                    
-                    c.Innovation = i.Number1.Innovation; // give it the existing innovation number
-                    isNovel = false;
-                    break;
-                }
-            }
-
-            if(isNovel) // if no equivalent Innovation is found
-            {
-                c.Innovation = NextInnovation; // give it the next available innovation number
-                this.population.Innovations.Add(new Innovation("link", c));
-            }
-        }
         public int NextNode()
         {
             int temp = nextNode;
@@ -134,6 +84,7 @@ namespace NEAT
             String temp = "";
             foreach (Node n in nodes)
             {
+                //Console.Out.WriteLine(n.Type);
                 if(n.Type == t)
                 {
                     temp += $"\t{n}\n";
