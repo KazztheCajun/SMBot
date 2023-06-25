@@ -56,10 +56,12 @@ namespace NEAT
             if(innov != null) // if the Innovation is not novel
             {
                 // generate new node | may want to add some error checking here
-                n = new Node((int) innov.NodeID, Genome.NodeType.HIDDEN, g); // NodeID is not null for IType.NODE innovations
+                #pragma warning disable CS8629 // NodeID is not null for IType.NODE innovations
+                n = new Node((int) innov.NodeID, Genome.NodeType.HIDDEN, g); 
                 g.Nodes.Add(n);
                 input = NewConnection(g, c.Input, n, innov.Number1.Innovation, Helper.NextGaussian());
-                output = NewConnection(g, n, c.Output, innov.Number2.Innovation, c.Weight); // Number2 is not null for IType.Node innovations
+                #pragma warning disable CS8602 // Number2 is not null for IType.Node innovations
+                output = NewConnection(g, n, c.Output, innov.Number2.Innovation, c.Weight); 
                 return;
             }
             // if the Innovation is novel

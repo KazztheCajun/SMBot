@@ -12,6 +12,8 @@ namespace NEAT
             foreach(Genome g in p.Genomes)
             {
                 Mutate.AddNode(g);
+                Mutate.AddNode(g);
+                Mutate.AddConnection(g);
             }
             //Console.WriteLine(p.Genomes[0]);
             //Console.WriteLine($"# of Innovations: {p.Innovations.Count}");
