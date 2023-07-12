@@ -2,12 +2,11 @@ using System;
 
 namespace NEAT
 {
-    class Node : IEquatable<Node>
+    public class Node : IEquatable<Node>
     {
 
         // fields
         private Genome.NodeType type;
-        private List<Node> inputs;
         private double potential;
         private double activation;
         private Genome genome;
@@ -16,18 +15,21 @@ namespace NEAT
         // properties
         public int Number => number;
         public double Potential => potential;
-        public List<Node> Inputs => inputs;
+        public Genome Genome
+        {
+            get { return genome; }
+            set { genome = value; }
+        }
         public Genome.NodeType Type
         {
             get {return type;}
             set {type = value;}
         }
 
-
+        // basic constructor that generates a brand new node
         public Node(int n, Genome.NodeType t, Genome g)
         {
             this.type = t;
-            this.inputs = new List<Node>();
             this.potential = 0;
             this.genome = g;
             this.number = n;
@@ -83,7 +85,7 @@ namespace NEAT
 
         public override string ToString()
         {
-            return $"Node: {number} | Type: {type} | Inputs: {inputs.Count}";
+            return $"Node: {number} | Type: {type}";
         }
     }
 }

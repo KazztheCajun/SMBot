@@ -2,21 +2,17 @@ using System;
 
 namespace NEAT
 {
-    class Connection : IEquatable<Connection>
+    public class Connection : IEquatable<Connection>
     {
         // fields
-        Node input;
-        Node output;
-        double weight;
+        Link link;
         bool isExpressed;
         int innovation;
 
         // constructors
         public Connection(Node i, Node o, double w, int inum, bool e)
         {
-            this.input = i;
-            this.output = o;
-            this.weight = w;
+            this.link = new Link(i, o, w);
             this.innovation = inum;
             this.isExpressed = e;
         }
@@ -30,27 +26,30 @@ namespace NEAT
                 return false;
             }
 
-            if(this.input.Number == other.Input.Number && this.output.Number == other.Output.Number)
-            {
-                return true;
-            }
+            return this.link.Equals(other.Link);
+        }
 
-            return false;
+        public bool SameInnovation(Connection? other)
+        {
+            if (other == null) return false;
+
+            return this.innovation.Equals(other.Innovation);
         }
 
         // properties
         public Node Input
         {
-            get {return input;}
+            get {return link.Input;}
         }
         public Node Output
         {
-            get {return output;}
+            get {return link.Output;}
         }
+        public Link Link => link;
         public double Weight
         {
-            get {return weight;}
-            set {this.weight = value;}
+            get {return link.Weight;}
+            set {this.link.Weight = value;}
         }
         public bool IsExpressed
         {

@@ -2,7 +2,7 @@ using System;
 
 namespace NEAT
 {
-    class Innovation : IEquatable<Innovation>
+    public class Innovation : IEquatable<Innovation>
     {
         // enumerated types
         public enum IType {NODE, LINK}
@@ -108,6 +108,7 @@ namespace NEAT
                     }
                     break;
                 case IType.LINK:
+                    //Console.Out.WriteLine($"Innovation: ({number1.Input.Number}, {number1.Output.Number}) | Connection: ({c.Input.Number}, {c.Output.Number}) -> {this.number1.Equals(c)}");
                     if (this.number1.Equals(c))
                     {
                         return true;

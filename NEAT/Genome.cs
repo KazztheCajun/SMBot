@@ -2,7 +2,7 @@ using System;
 
 namespace NEAT
 {
-    class Genome : IEquatable<Genome>
+    public class Genome : IEquatable<Genome>
     {
         // enumerated values
         public enum NodeType {SENSOR, HIDDEN, OUTPUT, BIAS}
@@ -16,6 +16,17 @@ namespace NEAT
         private double fitness;
         private double adjustedFitness;
         private Random rand;
+
+        /* 
+         * Basic constructor that creates a new, minimal genome with the given number of inputs and outputs
+         * Params:
+         * id => the id number for this Genome, generally from the Population associated with it
+         * inputs => the number of input, or SENSOR, nodes for this Genome
+         * outputs => the number of OUTPUT nodes for this Genome
+         * p => the Population that spawned this Genome
+         * r => reference to the random generator for the given Population
+         *
+         */
 
         public Genome(int id, int inputs, int outputs, Population p, Random r)
         {
@@ -49,6 +60,43 @@ namespace NEAT
                     }
                 }
             }
+        }
+
+        /*
+         *
+         * Constructor that creates a new, blank Genome
+         *
+         */
+        public Genome(int id, Population p, Random r)
+        {
+            this.id = id;
+            this.nodes = new List<Node>();
+            this.connections = new List<Connection>();
+            this.population = p;
+            this.rand = r;
+            this.nextNode = 1;
+        }
+
+        // find all non-SENSOR nodes that are not connected to the given node
+        // should also filter to not allow output nodes to connect to other output nodes
+        public List<Node> FindUnconnectedNodes(Node node)
+        {
+            List<Node> connected = new List<Node>();
+
+            foreach (Connection c in connections) // check each connection
+            {
+                if (c.Input.Equals(node)) // if the given node is listed as an input, add the corresponding output node
+                {
+                    connected.Add(c.Output);
+                }
+                else if (c.Input.Type != NodeType.SENSOR && c.Output.Equals(node)) // if the given node is listed as output and the input node is not a SENSOR, add the corresponding input node
+                {
+                    connected.Add(c.Input);
+                }
+            }
+
+            return nodes.FindAll((n) => !connected.Contains(n) && n.Type != NodeType.SENSOR); // return the list of nodes that are not in the list of connected nodes
+
         }
 
         public int NextNode()

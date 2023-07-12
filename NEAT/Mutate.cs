@@ -18,9 +18,10 @@ namespace NEAT
         {
             while (true) // loop until a new connection is made
             {
-                Node node = g.Nodes[g.Rand.Next(g.Nodes.Count)]; // select a random node
-                // find all other non-sensor nodes that it is not connected to
-                List<Node> unconnected = g.Nodes.FindAll(n => !n.Inputs.Contains<Node>(node) && n.Type != Genome.NodeType.SENSOR); 
+                int index = g.Rand.Next(g.Nodes.Count);
+                Node node = g.Nodes[index]; // select a random node
+                // find all other nodes that it is not connected to that node
+                List<Node> unconnected = g.FindUnconnectedNodes(node);
                 if (unconnected.Count > 0) // if there are any unconnected nodes
                 {
                     Node other = unconnected[g.Rand.Next(unconnected.Count)]; // select a random one
@@ -137,7 +138,6 @@ namespace NEAT
             }
             
             g.Connections.Add(temp); // add the connection gene to the list of connection genes
-            o.Inputs.Add(i); // add input node to the output node's input list
             return temp;
         }
 

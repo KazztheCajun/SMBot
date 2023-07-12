@@ -3,11 +3,12 @@ using System.Text;
 
 namespace NEAT
 {        
-    class Population
+    public class Population
     {
         // fields
         private int currentInnovation;
         private int currentNode;
+        private int currentGenome;
         private List<Genome> genomes;
         private List<Species> species;
         private List<Organism> organisms;
@@ -25,10 +26,11 @@ namespace NEAT
             this.innovations = new List<Innovation>();
             this.currentInnovation = 1;
             this.currentNode = 1;
+            this.currentGenome = 1;
 
             for(int i = 0; i < size; i++)
             {
-                genomes.Add(new Genome(i+1, iSize, oSize, this, rand));
+                genomes.Add(new Genome(NextGenome(), iSize, oSize, this, rand));
             }
         }
 
@@ -63,6 +65,13 @@ namespace NEAT
         {
             int temp = currentInnovation;
             currentInnovation++;
+            return temp;
+        }
+
+        public int NextGenome()
+        {
+            int temp = currentGenome;
+            currentGenome++;
             return temp;
         }
 
@@ -108,6 +117,7 @@ namespace NEAT
         // properties
         public List<Genome> Genomes => genomes;
         public List<Innovation> Innovations => innovations;
+        public Random Random => rand;
     }
 
 }
